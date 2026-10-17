@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dialogue Deck · RU → EN</title>
+<style>
+  :root{
+    --ink:#40342b;
+    --paper:#fffdf7;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:"Comic Sans MS","Comic Neue","Chalkboard SE","Segoe Print","Marker Felt",cursive,sans-serif;
+    color:var(--ink);
+    background-color:#fdf4e3;
+    background-image:radial-gradient(#f0dfbe 2.2px, transparent 2.2px), radial-gradient(#f6e8cf 2.2px, transparent 2.2px);
+    background-size:34px 34px, 34px 34px;
+    background-position:0 0, 17px 17px;
+    min-height:100vh;
+    padding:26px 18px 56px;
+  }
+  .wrap{max-width:780px;margin:0 auto}
+  header{text-align:center;margin-bottom:16px}
+  h1{font-size:1.9rem;margin:0 0 6px}
+  h1 .emoji{display:inline-block;transform:rotate(-10deg)}
+  .sub{margin:0 0 10px;font-size:1rem;color:#7c6a58}
+  .legend{display:flex;justify-content:center;gap:22px;flex-wrap:wrap}
+  .who{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.95rem}
+  .who .avatar{width:28px;height:28px}
+
+  .progress-row{display:flex;align-items:center;gap:12px;margin:16px 0 20px}
+  .counter{font-weight:700;font-size:.95rem;white-space:nowrap}
+  .track{flex:1;height:14px;border:3px solid var(--ink);border-radius:999px;background:#fff;overflow:hidden}
+  .fill{height:100%;width:0;background:repeating-linear-gradient(45deg,#ffd65a 0 10px,#ffcb3d 10px 20px);transition:width .3s ease}
+
+  .stage{position:relative;perspective:1400px;padding:10px 0 6px}
+  .stage::before,.stage::after{
+    content:"";position:absolute;left:50%;top:50%;width:min(680px,94%);height:452px;
+    border:3px solid rgba(64,52,43,.4);border-radius:24px;background:#f7ecd8;z-index:0;
+  }
+  .stage::before{transform:translate(-50%,-50%) rotate(2deg) translate(10px,8px)}
+  .stage::after{transform:translate(-50%,-50%) rotate(-2deg) translate(-10px,10px)}
+
+  .card{
+    position:relative;z-index:1;width:min(680px,100%);height:464px;margin:0 auto;
+    transform-style:preserve-3d;cursor:pointer;outline:none;
+    transition:transform .2s ease, opacity .2s ease;
+  }
+  .card:focus-visible .inner{box-shadow:0 0 0 4px #ffd65a}
+  .card.exit-l{transform:translateX(-80px) rotateY(30deg) scale(.94);opacity:0}
+  .card.exit-r{transform:translateX(80px) rotateY(-30deg) scale(.94);opacity:0}
+  .card.enter-r{animation:enterR .3s ease both}
+  .card.enter-l{animation:enterL .3s ease both}
+  @keyframes enterR{from{transform:translateX(80px) rotateY(-30deg) scale(.94);opacity:0}to{transform:none;opacity:1}}
+  @keyframes enterL{from{transform:translateX(-80px) rotateY(30deg) scale(.94);opacity:0}to{transform:none;opacity:1}}
+
+  .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.4,.2,.2,1)}
+  .card.flipped .inner{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border:3px solid var(--ink);border-radius:24px;background:var(--paper);
+    box-shadow:0 8px 0 rgba(64,52,43,.14);
+    display:flex;flex-direction:column;align-items:center;
+    gap:12px;padding:38px 26px 40px;text-align:center;
+  }
+  .face.back{transform:rotateY(180deg);background:var(--tint,#fff1c6)}
+  .icon{
+    width:74px;height:74px;border-radius:50%;flex:none;
+    background:rgba(255,255,255,.9);border:3px dashed rgba(64,52,43,.35);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .icon svg{width:58px;height:58px;display:block}
+  .lang{
+    position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+    font-size:.72rem;font-weight:700;letter-spacing:2px;
+    background:var(--ink);color:#fff8ec;border-radius:999px;padding:3px 13px;
+  }
+  .hint{position:absolute;top:11px;right:16px;font-size:.78rem;color:#b3a18c;font-weight:700}
+
+  .lines{display:flex;flex-direction:column;gap:10px;width:100%;align-items:stretch}
+  .line{display:flex;align-items:flex-end;gap:8px}
+  .line.b{flex-direction:row-reverse}
+  .avatar{
+    width:38px;height:38px;flex:none;border-radius:50%;
+    border:2.5px solid var(--ink);background:#fff;overflow:hidden;
+  }
+  .avatar svg{width:100%;height:100%;display:block}
+  .bubble{
+    position:relative;max-width:80%;padding:8px 13px;
+    border:2.5px solid var(--ink);border-radius:15px;
+    font-size:1.04rem;font-weight:700;line-height:1.32;text-align:left;
+  }
+  .line.a .bubble{background:#fff;border-bottom-left-radius:5px}
+  .line.a .bubble::after{
+    content:"";position:absolute;left:-7.5px;bottom:11px;width:10px;height:10px;
+    background:#fff;border-left:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);
+    transform:rotate(45deg);
+  }
+  .line.b .bubble{background:#d9f0ff;border-bottom-right-radius:5px}
+  .line.b .bubble::after{
+    content:"";position:absolute;right:-7.5px;bottom:11px;width:10px;height:10px;
+    background:#d9f0ff;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);
+    transform:rotate(45deg);
+  }
+
+  .dots{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:20px 0 18px}
+  .dot{
+    width:16px;height:16px;border-radius:50%;border:2.5px solid var(--ink);
+    background:#fff;cursor:pointer;padding:0;transition:transform .15s, background .15s;
+  }
+  .dot:hover{transform:scale(1.25)}
+  .dot.done{background:#ffd65a}
+  .dot.current{background:#ff9840;transform:scale(1.35)}
+
+  .controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  .btn{
+    font:inherit;font-weight:700;font-size:1.05rem;color:var(--ink);
+    border:3px solid var(--ink);border-radius:999px;padding:11px 24px;cursor:pointer;
+    box-shadow:0 5px 0 rgba(64,52,43,.25);
+    transition:transform .12s, box-shadow .12s, opacity .12s;
+  }
+  .btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 0 rgba(64,52,43,.25)}
+  .btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 rgba(64,52,43,.25)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  #backBtn{background:#fff}
+  #flipBtn{background:#cdeeff}
+  #nextBtn{background:#ffd65a}
+  footer{text-align:center;margin-top:24px;color:#a08c74;font-size:.88rem}
+  kbd{
+    font:inherit;font-size:.8rem;background:#fff;border:2px solid #d8c8ae;
+    border-bottom-width:3px;border-radius:6px;padding:1px 7px;
+  }
+  @media (max-width:520px){
+    .card{height:520px}
+    .bubble{font-size:.95rem;padding:7px 11px}
+    .icon{width:64px;height:64px}
+    .icon svg{width:50px;height:50px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="emoji">🗨️</span> Dialogue Deck · Знакомство</h1>
+    <p class="sub">Саша и Наташа встречаются впервые · 5 диалоговых карточек · клик — перевернуть</p>
+    <div class="legend" id="legend"></div>
+  </header>
+
+  <div class="progress-row">
+    <span class="counter" id="counter">1 / 5</span>
+    <div class="track"><div class="fill" id="fill"></div></div>
+  </div>
+
+  <div class="stage">
+    <div class="card" id="card" tabindex="0" role="button" aria-pressed="false">
+      <div class="inner">
+        <div class="face front">
+          <span class="hint">нажми, чтобы перевернуть 👆</span>
+          <div class="icon" id="iconFront"></div>
+          <div class="lines" id="linesFront"></div>
+          <span class="lang">RU</span>
+        </div>
+        <div class="face back">
+          <div class="icon" id="iconBack"></div>
+          <div class="lines" id="linesBack"></div>
+          <span class="lang">EN</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="controls">
+    <button class="btn" id="backBtn" type="button">◀ Back · Назад</button>
+    <button class="btn" id="flipBtn" type="button">Показать английский →</button>
+    <button class="btn" id="nextBtn" type="button">Next · Дальше ▶</button>
+  </div>
+
+  <footer>Листать: <kbd>←</kbd> <kbd>→</kbd> · Перевернуть: <kbd>Space</kbd></footer>
+</div>
+
+<script>
+const INK = "#40342b";
+const STAR = "0,-6.5 1.53,-2.1 6.18,-2.01 2.47,0.8 3.82,5.26 0,2.6 -3.82,5.26 -2.47,0.8 -6.18,-2.01 -1.53,-2.1";
+
+const avatarA = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="54" r="34" fill="#ffe8c9" stroke="${INK}" stroke-width="4"/>
+  <path d="M16 54 q-2 -32 34 -32 q36 0 34 32 q-8 -22 -34 -22 q-26 0 -34 22 z" fill="#5b4636" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+  <circle cx="39" cy="58" r="3" fill="${INK}"/>
+  <circle cx="61" cy="58" r="3" fill="${INK}"/>
+  <path d="M42 70 q8 7 16 0" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>
+</svg>`;
+
+const avatarB = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="50" cy="54" r="34" fill="#ffe8c9" stroke="${INK}" stroke-width="4"/>
+  <path d="M16 54 q-2 -32 34 -32 q36 0 34 32 q-8 -22 -34 -22 q-26 0 -34 22 z" fill="#b56238" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M82 40 q16 6 8 26 q-3 7 -11 9 q5 -10 0 -18 q-4 -7 -8 -9 z" fill="#b56238" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="39" cy="58" r="3" fill="${INK}"/>
+  <circle cx="61" cy="58" r="3" fill="${INK}"/>
+  <path d="M42 70 q8 7 16 0" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>
+</svg>`;
+
+const icons = {
+  meet: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="26" cy="58" r="16" fill="#ffe8c9" stroke="${INK}" stroke-width="3.2"/>
+    <circle cx="21.5" cy="55.5" r="2" fill="${INK}"/><circle cx="31" cy="55.5" r="2" fill="${INK}"/>
+    <path d="M21.5 62.5 q4.5 4 9 0" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>
+    <circle cx="74" cy="58" r="16" fill="#ffe8c9" stroke="${INK}" stroke-width="3.2"/>
+    <circle cx="69.5" cy="55.5" r="2" fill="${INK}"/><circle cx="79" cy="55.5" r="2" fill="${INK}"/>
+    <path d="M69.5 62.5 q4.5 4 9 0" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/>
+    <text x="50" y="46" text-anchor="middle" font-size="38" font-weight="bold" fill="${INK}" font-family="'Comic Sans MS',cursive">?</text>
+    <path d="M20 22 v8 M16 26 h8 M80 22 v8 M76 26 h8" stroke="#ffb703" stroke-width="3" stroke-linecap="round"/>
+  </svg>`,
+
+  school: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 26 L62 12" stroke="#ffd65a" stroke-width="8" stroke-linecap="round"/>
+    <path d="M62 12 l12 3.5 l-11 7 z" fill="#ffe8c9" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>
+    <circle cx="66.5" cy="17.5" r="1.8" fill="${INK}"/>
+    <rect x="26" y="32" width="48" height="44" rx="10" fill="#7fc8f8" stroke="${INK}" stroke-width="3.2"/>
+    <path d="M40 32 v-3 a10 8 0 0 1 20 0 v3" fill="none" stroke="${INK}" stroke-width="3.4" stroke-linecap="round"/>
+    <rect x="34" y="52" width="32" height="16" rx="6" fill="#cdeeff" stroke="${INK}" stroke-width="2.6"/>
+    <polygon points="${STAR}" transform="translate(50,60) scale(0.85)" fill="#ffc93c" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M86 40 v8 M82 44 h8" stroke="#ffb703" stroke-width="2.8" stroke-linecap="round"/>
+  </svg>`,
+
+  house: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="83" cy="19" r="7" fill="#ffd65a" stroke="${INK}" stroke-width="2.6"/>
+    <path d="M83 6 v-4 M83 36 v-4 M70 19 h-4 M100 19 h-4" stroke="#ffb703" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M18 50 L50 22 L82 50 z" fill="#e2574c" stroke="${INK}" stroke-width="3.2" stroke-linejoin="round"/>
+    <rect x="26" y="50" width="48" height="30" fill="#ffe8c9" stroke="${INK}" stroke-width="3.2"/>
+    <rect x="38" y="60" width="14" height="20" rx="3" fill="#c98a4b" stroke="${INK}" stroke-width="2.6"/>
+    <circle cx="49" cy="70" r="1.4" fill="${INK}"/>
+    <path d="M63 58 c-1.8 -3.4 -7 -3.4 -7 1 c0 3.4 4.2 5.4 7 7.8 c2.8 -2.4 7 -4.4 7 -7.8 c0 -4.4 -5.2 -4.4 -7 -1 z" fill="#ff7d9c" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+  </svg>`,
+
+  classes: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22 16 v58" stroke="${INK}" stroke-width="3.6" stroke-linecap="round"/>
+    <path d="M24 22 h26 l-8 8 l8 8 h-26 z" fill="#7fc8f8" stroke="${INK}" stroke-width="2.8" stroke-linejoin="round"/>
+    <text x="34" y="37.5" text-anchor="middle" font-size="15" font-weight="bold" fill="${INK}" font-family="'Comic Sans MS',cursive">А</text>
+    <path d="M24 50 h26 l-8 8 l8 8 h-26 z" fill="#ffd65a" stroke="${INK}" stroke-width="2.8" stroke-linejoin="round"/>
+    <text x="34" y="65.5" text-anchor="middle" font-size="15" font-weight="bold" fill="${INK}" font-family="'Comic Sans MS',cursive">Б</text>
+    <circle cx="68" cy="64" r="13" fill="#fff" stroke="${INK}" stroke-width="2.8"/>
+    <text x="68" y="69" text-anchor="middle" font-size="13" font-weight="bold" fill="${INK}" font-family="'Comic Sans MS',cursive">15</text>
+    <polygon points="${STAR}" transform="translate(70,26) scale(1.05)" fill="#ffc93c" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>`,
+
+  movie: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="12" y="18" width="20" height="58" rx="4" fill="#5b4636" stroke="${INK}" stroke-width="2.8"/>
+    <rect x="16" y="24" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="16" y="36" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="16" y="48" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="16" y="60" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="24" y="24" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="24" y="36" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="24" y="48" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <rect x="24" y="60" width="4.5" height="6" rx="1.2" fill="#fff"/>
+    <circle cx="52" cy="36" r="7" fill="#fff8e1" stroke="${INK}" stroke-width="2.6"/>
+    <circle cx="64" cy="33" r="7" fill="#fff8e1" stroke="${INK}" stroke-width="2.6"/>
+    <circle cx="76" cy="37" r="7" fill="#fff8e1" stroke="${INK}" stroke-width="2.6"/>
+    <circle cx="58" cy="28" r="7" fill="#fff8e1" stroke="${INK}" stroke-width="2.6"/>
+    <circle cx="70" cy="27" r="6.5" fill="#fff8e1" stroke="${INK}" stroke-width="2.6"/>
+    <path d="M44 44 h40 l-6 36 h-28 z" fill="#ff8aa0" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M54 44 l2 36 M64 44 l0 36 M74 44 l-2 36" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M90 66 v8 M86 70 h8" stroke="#ffb703" stroke-width="2.8" stroke-linecap="round"/>
+  </svg>`
+};
+
+const deck = [
+  {
+    icon: "meet", tint: "#ffe1e8",
+    lines: [
+      { who: "a", ru: "Привет, меня зовут Саша. Мы раньше встречались?", en: "Hi, my name is Sasha. Have we met before?" },
+      { who: "b", ru: "Не думаю. Меня зовут Наташа.", en: "I don’t think so. My name is Natasha." }
+    ]
+  },
+  {
+    icon: "school", tint: "#d9f0ff",
+    lines: [
+      { who: "a", ru: "Очень приятно. Ты новенькая?", en: "Nice to meet you. Are you new here?" },
+      { who: "b", ru: "Да, мы только что сюда переехали, и я теперь учусь в этой школе.", en: "Yes, we’ve just moved here, and I’m studying at this school now." }
+    ]
+  },
+  {
+    icon: "house", tint: "#ddf2e1",
+    lines: [
+      { who: "a", ru: "Добро пожаловать в наш район и в нашу школу. Когда вы переехали?", en: "Welcome to our neighborhood and to our school. When did you move here?" },
+      { who: "b", ru: "Неделю назад. А ты давно здесь живёшь?", en: "A week ago. And how long have you lived here?" }
+    ]
+  },
+  {
+    icon: "classes", tint: "#fff1c6",
+    lines: [
+      { who: "a", ru: "С детства. 15 лет.", en: "Since I was a child. 15 years." },
+      { who: "b", ru: "Так мы одного возраста, мне будет 15 в октябре. Может, мы и в одном классе?", en: "So we’re the same age — I’ll be 15 in October. Maybe we’re in the same class?" },
+      { who: "a", ru: "Я в «А», а ты?", en: "I’m in Class “A”. And you?" },
+      { who: "b", ru: "Мне кажется, я в «Б».", en: "I think I’m in Class “B”." }
+    ]
+  },
+  {
+    icon: "movie", tint: "#f2e4ff",
+    lines: [
+      { who: "a", ru: "Пойдём с нами в кино сегодня вечером?", en: "Want to come to the movies with us tonight?" },
+      { who: "b", ru: "Замечательно! С удовольствием. Спасибо за приглашение.", en: "Wonderful! I’d love to. Thanks for the invitation." },
+      { who: "a", ru: "Увидимся!", en: "See you later!" },
+      { who: "b", ru: "До встречи!", en: "See you!" }
+    ]
+  }
+];
+
+let idx = 0, flipped = false, busy = false;
+
+const card = document.getElementById("card");
+const linesFront = document.getElementById("linesFront");
+const linesBack = document.getElementById("linesBack");
+const iconFront = document.getElementById("iconFront");
+const iconBack = document.getElementById("iconBack");
+const counter = document.getElementById("counter");
+const fill = document.getElementById("fill");
+const dotsBox = document.getElementById("dots");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const flipBtn = document.getElementById("flipBtn");
+
+const legend = document.getElementById("legend");
+legend.innerHTML = `
+  <span class="who"><span class="avatar">${avatarA}</span> А · Саша</span>
+  <span class="who"><span class="avatar">${avatarB}</span> Б · Наташа</span>`;
+
+const avatars = { a: avatarA, b: avatarB };
+const names = { a: "Саша", b: "Наташа" };
+
+const linesHtml = (lines, lang) => lines.map(l => `
+  <div class="line ${l.who}" >
+    <span class="avatar" title="${names[l.who]}">${avatars[l.who]}</span>
+    <div class="bubble">${l[lang]}</div>
+  </div>`).join("");
+
+const dots = deck.map((c, i) => {
+  const d = document.createElement("button");
+  d.className = "dot";
+  d.type = "button";
+  d.setAttribute("aria-label", "Диалог " + (i + 1));
+  d.addEventListener("click", () => { if (i !== idx) goTo(i); });
+  dotsBox.appendChild(d);
+  return d;
+});
+
+function paint() {
+  const c = deck[idx];
+  linesFront.innerHTML = linesHtml(c.lines, "ru");
+  linesBack.innerHTML = linesHtml(c.lines, "en");
+  iconFront.innerHTML = icons[c.icon];
+  iconBack.innerHTML = icons[c.icon];
+  card.style.setProperty("--tint", c.tint);
+  counter.textContent = (idx + 1) + " / " + deck.length;
+  fill.style.width = ((idx + 1) / deck.length * 100) + "%";
+  dots.forEach((d, i) => {
+    d.classList.toggle("current", i === idx);
+    d.classList.toggle("done", i < idx);
+  });
+  backBtn.disabled = idx === 0;
+  nextBtn.disabled = idx === deck.length - 1;
+  flipBtn.textContent = flipped ? "Показать русский ←" : "Показать английский →";
+  card.setAttribute("aria-pressed", flipped ? "true" : "false");
+}
+
+function flip() {
+  if (busy) return;
+  flipped = !flipped;
+  card.classList.toggle("flipped", flipped);
+  flipBtn.textContent = flipped ? "Показать русский ←" : "Показать английский →";
+  card.setAttribute("aria-pressed", flipped ? "true" : "false");
+}
+
+function goTo(newIdx, dir) {
+  if (busy || newIdx === idx) return;
+  busy = true;
+  const d = dir || (newIdx > idx ? "fwd" : "back");
+  card.classList.add(d === "fwd" ? "exit-l" : "exit-r");
+  setTimeout(() => {
+    idx = newIdx;
+    flipped = false;
+    card.classList.remove("flipped", "exit-l", "exit-r");
+    paint();
+    void card.offsetWidth;
+    card.classList.add(d === "fwd" ? "enter-r" : "enter-l");
+    setTimeout(() => { card.classList.remove("enter-r", "enter-l"); busy = false; }, 320);
+  }, 210);
+}
+
+backBtn.addEventListener("click", () => goTo(idx - 1, "back"));
+nextBtn.addEventListener("click", () => goTo(idx + 1, "fwd"));
+flipBtn.addEventListener("click", flip);
+card.addEventListener("click", flip);
+card.addEventListener("keydown", e => {
+  if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight" && idx < deck.length - 1) goTo(idx + 1, "fwd");
+  if (e.key === "ArrowLeft" && idx > 0) goTo(idx - 1, "back");
+});
+
+paint();
+</script>
+</body>
+</html>
